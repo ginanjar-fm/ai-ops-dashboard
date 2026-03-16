@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
 import MetricCard from './components/MetricCard';
 import RealtimeChart from './components/RealtimeChart';
@@ -17,7 +17,8 @@ function App() {
   const [historicalMetrics, setHistoricalMetrics] = useState<MetricPoint[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 
-  const fetchHistory = useCallback(async (range: TimeRange) => {
+  const handleTimeRangeChange = useCallback(async (range: TimeRange) => {
+    setTimeRange(range);
     if (range === 'live') return;
     try {
       const res = await fetch(`${API_URL}/api/metrics/history?range=${range}`);
@@ -29,12 +30,6 @@ function App() {
       // API might not be available yet
     }
   }, []);
-
-  useEffect(() => {
-    if (timeRange !== 'live') {
-      void fetchHistory(timeRange);
-    }
-  }, [timeRange, fetchHistory]);
 
   const displayMetrics = timeRange === 'live' ? metricsHistory : historicalMetrics;
 
@@ -103,7 +98,7 @@ function App() {
           <RealtimeChart
             metricsHistory={displayMetrics}
             timeRange={timeRange}
-            onTimeRangeChange={setTimeRange}
+            onTimeRangeChange={handleTimeRangeChange}
           />
         </div>
         <div>
