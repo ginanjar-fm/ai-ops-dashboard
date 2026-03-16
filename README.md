@@ -2,8 +2,7 @@
 
 Real-time infrastructure monitoring dashboard with AI-powered anomaly detection. Built with React, Node.js, WebSocket, PostgreSQL, and Claude AI.
 
-<!-- TODO: Replace with actual demo GIF -->
-![Demo](docs/demo.gif)
+![AI Ops Dashboard — real-time metrics, AI anomaly detection, and alert feed](docs/screenshot-dashboard-with-alerts.png)
 
 ## Overview
 
