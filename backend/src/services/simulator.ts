@@ -31,10 +31,10 @@ export class MetricsSimulator {
     const injectAnomaly = this.tickCount % 15 === 0; // every ~30s (15 ticks * 2s)
 
     let cpu_usage = this.randomInRange(20, 60);
-    let memory_usage = this.randomInRange(40, 70);
+    const memory_usage = this.randomInRange(40, 70);
     let api_latency_ms = this.randomInRange(50, 200);
     let error_rate = this.randomInRange(0, 2);
-    let request_count = Math.floor(this.randomInRange(100, 500));
+    const request_count = Math.floor(this.randomInRange(100, 500));
 
     if (injectAnomaly) {
       const anomalyType = Math.floor(Math.random() * 3);
