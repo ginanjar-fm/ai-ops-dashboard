@@ -1,0 +1,38 @@
+databases:
+  - name: aiops-db
+    plan: free
+    databaseName: aiops
+    user: postgres
+
+services:
+  - type: web
+    name: aiops-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aiops-db
+          property: connectionString
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: PORT
+        value: "3001"
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /api/metrics/current
+
+  - type: web
+    name: aiops-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install --legacy-peer-deps && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://aiops-backend.onrender.com/api/*
