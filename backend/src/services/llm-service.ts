@@ -5,7 +5,7 @@ const apiKey = process.env.ANTHROPIC_API_KEY;
 
 let anthropic: Anthropic | null = null;
 if (apiKey) {
-  anthropic = new Anthropic({ apiKey });
+  anthropic = new Anthropic({ apiKey, baseURL: 'https://openrouter.ai/api' });
 }
 
 interface LlmResponse {
@@ -24,7 +24,7 @@ export async function analyzeMetrics(metricsWindow: MetricPoint[]): Promise<AiAn
     const prompt = buildPrompt(metricsWindow);
 
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'anthropic/claude-sonnet-4-20250514',
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }],
     });
